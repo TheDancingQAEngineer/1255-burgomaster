@@ -1,0 +1,1 @@
+python3 -m unittest discover -s ./python/tests -p '*test*.py'
