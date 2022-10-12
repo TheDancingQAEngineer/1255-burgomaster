@@ -4,3 +4,9 @@ __pycache__
 *.sock
 __pycache__/
 config-mysql.txt
+
+# Python virtual environment
+.venv/
+
+# VS Code settings
+.vscode/
