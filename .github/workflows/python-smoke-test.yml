@@ -13,4 +13,4 @@ jobs:
 
     steps:
       - run:
-          echo hello from python smoke test
+          sh ./run_tests.sh
