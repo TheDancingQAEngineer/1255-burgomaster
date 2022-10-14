@@ -1,0 +1,16 @@
+name: "Python Smoke Tests"
+
+on:
+  pull-request:
+  push:
+  workflow_call:
+  workflow_dispatch:
+
+jobs:
+  smoke_job:
+    name: Smoke Actions Job
+    runs-on: ubuntu-latest
+
+    steps:
+      run:
+        echo hello from python smoke test
