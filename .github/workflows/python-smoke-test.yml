@@ -1,7 +1,7 @@
 name: "Python Smoke Tests"
 
 on:
-  pull_request:
+  pull-request:
   push:
   workflow_call:
   workflow_dispatch:
