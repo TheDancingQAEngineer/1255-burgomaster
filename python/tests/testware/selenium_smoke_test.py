@@ -10,7 +10,7 @@ class SeleniumSmokeTest(unittest.TestCase):
     def setUp(self):
         options: FirefoxOptions = FirefoxOptions()
         options.log.level = "trace"
-        self.browser: WebDriver = Firefox(options=options, executable_path="/snap/bin/geckodriver")
+        self.browser: WebDriver = Firefox(options=options)
         self.addCleanup(self.browser.quit)
 
     def test_can_run_firefox_and_quit(self):
