@@ -18,6 +18,12 @@ jobs:
       - name: Install python requirements
         run: pip install -r ./python/requirements.txt
 
+      - name: Install Firefox
+        run: apt install firefox
+
+      - name: Install geckodriver
+        run: apt-get install firefox-geckodriver
+
       - name: Run tests
         run:
           sh ./run_tests.sh
