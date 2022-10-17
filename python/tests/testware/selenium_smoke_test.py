@@ -8,9 +8,7 @@ class SeleniumSmokeTest(unittest.TestCase):
 
     def setUp(self):
         self.browser: WebDriver = Firefox()
-
-    def tearDown(self):
-        self.browser.quit()
+        self.addCleanup(self.browser.quit)
 
     def test_can_run_firefox_and_quit(self):
         pass
