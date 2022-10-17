@@ -9,7 +9,7 @@ class SeleniumSmokeTest(unittest.TestCase):
 
     def setUp(self):
         options: FirefoxOptions = FirefoxOptions()
-        options.log.level = "trace"
+        options.headless = True
         self.browser: WebDriver = Firefox(options=options)
         self.addCleanup(self.browser.quit)
 
