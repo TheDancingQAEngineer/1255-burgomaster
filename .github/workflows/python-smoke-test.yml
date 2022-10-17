@@ -19,7 +19,7 @@ jobs:
         run: pip install -r ./python/requirements.txt
 
       - name: Install Firefox
-        run: apt install firefox
+        run: sudo apt install firefox
 
       - name: Install geckodriver
         run: apt-get install firefox-geckodriver
