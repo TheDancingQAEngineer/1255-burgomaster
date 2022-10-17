@@ -22,7 +22,7 @@ jobs:
         run: sudo apt install firefox
 
       - name: Install geckodriver
-        run: apt-get install firefox-geckodriver
+        run: sudo apt-get install firefox-geckodriver
 
       - name: Run tests
         run:
