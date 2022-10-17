@@ -6,7 +6,7 @@ __pycache__/
 config-mysql.txt
 
 # Python virtual environment
-.venv/
+.venv*/
 
 # VS Code settings
 .vscode/
