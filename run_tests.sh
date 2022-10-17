@@ -1,1 +1,1 @@
-python3 -m unittest discover -s ./python/tests -p '*test*.py'
+python -m unittest discover -v -s ./python/tests -p '*test*.py'
