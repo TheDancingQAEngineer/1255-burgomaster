@@ -1,1 +1,1 @@
-selenium<4
+selenium==3.14
