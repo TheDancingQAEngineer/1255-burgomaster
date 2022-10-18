@@ -18,6 +18,8 @@ jobs:
       - name: Install python requirements
         run: pip install -r ./python/requirements.txt
 
+      - name: Start local game server
+        run: sh ./start_server.sh
+
       - name: Run tests
-        run:
-          sh ./run_tests.sh
+        run: sh ./run_functional_tests.sh
