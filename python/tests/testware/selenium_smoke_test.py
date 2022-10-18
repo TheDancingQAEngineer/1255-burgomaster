@@ -1,12 +1,9 @@
 import unittest
 
-from os import environ
-from selenium.webdriver import Firefox
-from selenium.webdriver.firefox.options import Options as FirefoxOptions
-from selenium.webdriver.remote.webdriver import WebDriver
+from python.testware.seleniumwrapper import SeleniumBaseTest
 
 
-class SeleniumSmokeTest(unittest.TestCase):
+class SeleniumSmokeTest(SeleniumBaseTest):
 
     def setUp(self):
         options: FirefoxOptions = FirefoxOptions()
@@ -16,7 +13,7 @@ class SeleniumSmokeTest(unittest.TestCase):
         self.addCleanup(self.browser.quit)
 
     def test_can_run_firefox_and_quit(self):
-        pass
+        self.assertEqual("firefox", self.browser.name)
 
 
 if __name__ == '__main__':
