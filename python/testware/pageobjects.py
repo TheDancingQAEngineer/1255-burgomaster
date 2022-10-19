@@ -1,3 +1,4 @@
+from typing import Tuple
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
@@ -31,7 +32,7 @@ class StartPageObject(BasePageObject):
     def verify_canvas_is_visible(self):
         raise NotImplementedError
 
-    def _wait_for_element_to_be_visible(self, locator: tuple[By, str]):
+    def _wait_for_element_to_be_visible(self, locator: Tuple[By, str]):
         try:
             element = WebDriverWait(self._driver, Timeouts.SHORT).until(
                 EC.visibility_of_element_located(locator)
