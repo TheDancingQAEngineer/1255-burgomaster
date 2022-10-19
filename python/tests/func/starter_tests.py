@@ -1,10 +1,20 @@
-import unittest
+import warnings
 
+from python.testware.pageobjects import StartPageObject
 from python.testware.seleniumwrapper import SeleniumBaseTest
 
 
 class StarterTests(SeleniumBaseTest):
 
-    def test_title_matches(self):
+    def setUp(self):
+        return super().setUp()
+
+    def test_game_loads(self):
+        page = StartPageObject(self.browser)
         self.browser.get("http://localhost:6699")
-        self.assertEqual("1255 Burgomaster", self.browser.title)
+
+        page.verify_menu_panel_is_visible()
+        page.verify_resource_panel_is_visible()
+        page.verify_canvas_is_visible()
+
+        warnings.warn("This test needs refactoring!")
