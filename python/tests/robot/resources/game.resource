@@ -3,11 +3,13 @@ Library    SeleniumLibrary
 Resource   locators.resource
 
 *** Variables ***
-${URL}      http://localhost:6699
-${BROWSER}        Firefox
+${URL}                  http://localhost:6699
+${BROWSER}              firefox
+${BROWSER HEADLESS}     headlessfirefox
 
 *** Keywords ***
 Open Game Page
+    Run Keyword If  %{GITHUB_ACTIONS}  ${BROWSER} =  Set Variable ${BROWSER HEADLESS}
     Open Browser   ${URL}    ${BROWSER}
 
 Verify Screen
