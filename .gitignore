@@ -13,4 +13,7 @@ config-mysql.txt
 .vscode/
 
 # Selenium WebDriver logs
-geckodriver.log
+geckodriver*.log
+
+# Robot Framework reports
+python/tests/robot/reports/
