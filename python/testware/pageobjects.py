@@ -15,12 +15,26 @@ class BasePageObject:
     def __init__(self, driver: WebDriver) -> None:
         self._driver = driver
 
+    def verify_element_is_present(self, locator: Tuple[By, str]):
+        try:
+            WebDriverWait(self._driver, Timeouts.SHORT).until(
+                EC.presence_of_element_located(locator))
+        except TimeoutException as e:
+            raise AssertionError(f"Element \"{locator[1]}\" not present after timeout.") from e
+
     def verify_element_is_visible(self, locator: Tuple[By, str]):
         try:
             WebDriverWait(self._driver, Timeouts.SHORT).until(
                 EC.visibility_of_element_located(locator))
         except TimeoutException as e:
             raise AssertionError(f"Element \"{locator[1]}\" not visible after timeout.") from e
+
+    def verify_element_is_clickable_and_click(self, locator: Tuple[By, str]):
+        try:
+            WebDriverWait(self._driver, Timeouts.SHORT).until(
+                EC.element_to_be_clickable(locator))
+        except TimeoutException as e:
+            raise AssertionError(f"Element \"{locator[1]}\" not clickable after timeout.") from e
 
 
 class StartPageObject(BasePageObject):
@@ -45,3 +59,15 @@ class StartPageObject(BasePageObject):
             self.verify_element_is_visible(StartPageLocators.CANVAS)
         except AssertionError as e:
             raise AssertionError("Canvas not visible.") from e
+
+    def verify_save_button_is_present(self):
+        try:
+            self.verify_element_is_present(StartPageLocators.SAVE_GAME_BUTTON)
+        except AssertionError as e:
+            raise AssertionError("Save button not present") from e
+
+    def click_save_button(self):
+        try:
+            self.verify_element_is_clickable_and_click(StartPageLocators.SAVE_GAME_BUTTON)
+        except AssertionError as e:
+            raise AssertionError("Can't click Save button.") from e
