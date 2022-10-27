@@ -5,11 +5,8 @@ __pycache__
 __pycache__/
 config-mysql.txt
 
-# Python virtual environment
-.venv*/
 
 # VS Code settings
-.vscode/
 
 # Selenium WebDriver logs
 geckodriver.log
