@@ -24,18 +24,17 @@
 		ws_server = "ws://localhost:6698";
 		dev_flag  = true;
 	}
-	function setUpTimers(){
+	function setUpBackendTimers(){
         if (config.isOnline && config.pullMessages){
             fpullMessagesTimer = setInterval(fpullMessages, config.pullMessagesMS);
             pullPremodMessagesTimer = setInterval(pullPremodMessages, 5000);
             nearestEventTimer = setInterval(getNearestEventTime, 10000);
-            pullAmberTimer = setInterval(pullAmber, 3000);
         }
 	}
-	setUpTimers()
+	setUpBackendTimers()
 	//to enable online features with a local backend server, type in da console:
 	// config.isOnline = true
-	// setUpTimers()
+	// setUpBackendTimers()
 	//functions
 	function remoteRegLogin() {
 		if (reglogin==="reg"){
@@ -52,6 +51,7 @@
 					postEventLog(msg);
 					msg       = "you got a 'registered user' badge and 10 ambers";
 					postEventLog(msg);
+					pullAmberTimer = setInterval(pullAmber, 3000);
 				}
 			};
 			fpullMessages();
@@ -80,6 +80,12 @@
 					msg = "login successfull";
 					postEventLog(msg);
 					fpullMessages();
+					if (config.isOnline === false){
+					    config.isOnline = true;
+					    setUpBackendTimers();
+					    enableOnlineCounter();
+					}
+					pullAmberTimer = setInterval(pullAmber, 3000);
 				}
 				if (this.readyState === 4 && this.status !== 200) {
 					if (config.debug){
@@ -108,12 +114,12 @@
 				if (config.debug){
 					console.log(messages);
 				}
-				document.getElementById("server-status").innerHTML="Up";
+				document.getElementById("spnServerStatusValue").innerHTML=locObj.serverStatusUp.txt;
 				chat_dom.innerHTML = "";
 				messages.forEach(printToChat);
 			}
 			if (this.readyState === 4 && this.status !== 200) {
-				document.getElementById("server-status").innerHTML="Down";
+				document.getElementById("spnServerStatusValue").innerHTML=locObj.serverStatusDown.txt;
 			}
 		};
 		endpoint  = webserver + "/api/v1.1/pull_messages";
@@ -169,7 +175,6 @@ function pullPremodMessages() {
 		xhttp.onreadystatechange = function() {
 			if (this.readyState === 4 && this.status === 200) {
 				the_resp = JSON.parse(this.responseText);
-				console.log(the_resp);
 				document.getElementById("gems").innerHTML = the_resp.amber;
 			}
 			if (this.readyState === 4 && this.status !== 200) {
@@ -433,60 +438,73 @@ function reloadBanned() {
 		}
 	}
 	function getNearestEventTime () {
-		back_response = null;
-		eventHelpMsg  = null;
 		var xhttp = new XMLHttpRequest();
 		xhttp.onreadystatechange = function() {
 			if (this.readyState === 4 && this.status === 200) {
 				back_response = JSON.parse(this.responseText);
-				//console.log(back_response);
 				cntdwn = back_response["countdown"];
 				cntdwn = cntdwn.replace("(","");
 				cntdwn = cntdwn.replace(")","");
 				cntdwn = cntdwn.split(",");
 				//console.log(cntdwn);
-				flag_event_started = parseInt(back_response["event_started"]);
+				//ToDo rename from event_status_code to event_status
+				event_status_code = parseInt(back_response["event_started"]);
+				event_id = parseInt(back_response["event_id"]);
 				event_timer_lbl = document.getElementById("event-label");
 				event_timer_val = document.getElementById("event-value");
 				eventTimerVal  =     cntdwn[0]+localeStrings[165][0];
 				eventTimerVal += " "+cntdwn[1]+localeStrings[165][1];
 				eventTimerVal += " "+cntdwn[2]+localeStrings[165][2];
-				if (flag_event_started===0){
-					event_timer_lbl.innerHTML="New Year event will start in ";
+				if (event_status_code===1){
+				    if (event_id === 1){
+				        event_name = locObj.eventHalloweenName.txt;
+				    }
+				    if (event_id === 2){
+				        event_name = locObj.eventNewYearName.txt;
+				    }
+					event_timer_lbl.innerHTML=event_name+locObj.eventWillStart.txt;
 					event_timer_val.innerHTML=eventTimerVal;
-
-				} else {
+				}
+				if (event_status_code===2){
 					//TODO THAT URGENT!
 					//BUT NOT TODAY
 					//game.getEventDetails();
-					event_timer_lbl.innerHTML="New Year event will end in ";
+					if (event_id === 1){
+				        event_name = locObj.eventHalloweenName.txt;
+				    }
+				    if (event_id === 2){
+				        event_name = locObj.eventNewYearName.txt;
+				    }
+					event_timer_lbl.innerHTML=event_name+locObj.eventWillEnd.txt;
 					event_timer_val.innerHTML=eventTimerVal;
 				}
-				console.log(eventHelpMsg);
-				//document.getElementById("lblEventCountdownValue").innerHTML = lblMsg;
-				//document.getElementById("lblEventCountdownValue").disabled = false;
 			}
 		};
 		endpoint    = webserver + "/api/v1.1/event_countdown";
 		xhttp.open("GET", endpoint, true);
 		xhttp.send();
 	}
-	users_online = document.getElementById("lbl_online_value");
-	if (config.isOnline) {
-		websocket = new WebSocket(ws_server);
-		websocket.onmessage = function (event) {
-			data = JSON.parse(event.data);
-			switch (data.type) {
-				case 'users':
-					users_online.textContent = (
-					data.count.toString() + " user" +
-					(data.count == 1 ? "" : "s"));
-					break;
-				default:
-					console.error("unsupported event", data);
-			}
-		}
-	}
+
+users_online = document.getElementById("spnOnlineValue");
+function enableOnlineCounter(){
+    if (config.isOnline) {
+        websocket = new WebSocket(ws_server);
+        websocket.onmessage = function (event) {
+           data = JSON.parse(event.data);
+           switch (data.type) {
+               case 'users':
+                   users_online.textContent = (
+                   data.count.toString() + " " +
+                   (data.count == 1 ? locObj.userCntOne.txt : locObj.userCntTwoPlus.txt));
+                   break;
+               default:
+                   console.error("unsupported event", data);
+               }
+           }
+        }
+}
+enableOnlineCounter();
+
 function send_gen_items(items_no){
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
@@ -532,20 +550,29 @@ function cloudQuickLoad(){
 			try {
 				resp      = JSON.parse(this.responseText);
 				save64    = resp.content;
-				console.log(save64);
-				console.log("we try to load the imported save");
-				saveLine  = atob(save64);
-				saveArray = saveLine.split(delimiter);
-				gameTemp  = JSON.parse(saveArray[0]);
-				overrideGame(gameTemp);
 			} catch(err) {
-				postEventLog(localeStrings[327],"bold,red");
+				postEventLog(errGettingCloudSave.txt,"bold,red");
 				console.log(err);
+			}
+			if (save64 === null){
+			    postEventLog(locObj.errNoCloudSave.txt,"bold,red");
+			} else {
+			    try {
+                    saveLine  = atob(save64);
+                    saveArray = saveLine.split(delimiter);
+                    gameTemp  = JSON.parse(saveArray[0]);
+                    overrideGame(gameTemp);
+                } catch(err) {
+                    postEventLog(locObj.errLoadingCloudSave.txt,"bold,red");
+				    console.log(err);
+                }
 			}
 		}
 		if (this.readyState === 4 && this.status !== 200) {
-			msg       = "game didn't saved to the cloud. You should be logined to the game before you could save the game";
-			postEventLog(msg);
+			postEventLog(locObj.errGetSaveEndpoint.txt,"bold,red");
+		    console.log(this.status, this.readyState);
+		    //ToDo - now server returns 0, 4 for JS; 500 in console, no data in logs of the server. Server is UP
+		    //but nothing valuable shown in the STDOUT. Fix the server first, fix the client second.
 		}
 	};
 	dataToParse = session+delimiter;
@@ -611,8 +638,13 @@ function eventItemCollected () {
 	xhttp.send(dataToParse);
 }
 function getEventHelp(){
-	if (flag_event_started===1){
-		showModal(0, '', getAck, locObj.eventNewYear.txt,  localeStrings[60], '')
+	if (event_status_code===2){
+	    if (event_id===1){
+		    showModal(0, '', getAck, locObj.eventHalloween.txt, locObj.okay.txt, '')
+		}
+		if (event_id===2){
+		    showModal(0, '', getAck, locObj.eventNewYear.txt, locObj.okay.txt, '')
+		}
 	}
 }
 

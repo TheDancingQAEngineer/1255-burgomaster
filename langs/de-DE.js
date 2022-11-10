@@ -30,9 +30,9 @@ localeStrings.push("placeholder");
 localeStrings.push("placeholder");
 localeStrings.push("placeholder");
 localeStrings.push("placeholder");//30
-localeStrings.push("Ja, auf die blutigste Weise!");
-localeStrings.push("Ja");
-localeStrings.push("Nein");
+localeStrings.push("placeholder");
+localeStrings.push("placeholder");
+localeStrings.push("placeholder");
 localeStrings.push("Ihr habt einen Bürger wegen %arg1 hingerichtet.");
 localeStrings.push("%arg1 is confiscated property of the executed citizen");//35
 localeStrings.push("Ihr habt zu wenig Bürger.");
@@ -537,3 +537,22 @@ locObj.execReasons = [{"txt":"Verrats", "loc":"when executing a person"},
 locObj.techArtilleryResearched = {"txt":"You researched the artillery technology!", "loc":"Happens when the tech is discovered"};
 locObj.bldUniversityHelp = {"txt":"This building is required to research new technologies", "loc":"User saw this when moving the coursor above the university icon in Building tab"};
 locObj.bldUniversityButton = {"txt":"Build university<br>%arg2 gold", "loc":"the label of the button of building the University on the building tab"};
+locObj.eventWillStart = {"txt":" event will start in", "loc":"shows on the status bar if an event was announced"};
+locObj.eventWillEnd = {"txt":" event will end in", "loc":"shows on the status bar if an event was started"};
+locObj.eventHalloweenName = {"txt":"Halloween", "loc":"shows on the status bar if the event announced or online"};
+locObj.eventNewYearName = {"txt":"New Year", "loc":"shows on the status bar if the event announced or online"};
+locObj.yes = {"txt":"Ja", "loc":"Positive answer, happens in modal dialogues"};
+locObj.yesKillBloody = {"txt":"Ja, auf die blutigste Weise!", "loc":"NOT USED YET"};
+locObj.no = {"txt":"Nein", "loc":"Negative answer, happens in modal dialogues"};
+locObj.serverStatusSpn = {"txt": "Server: ", "loc":"showed in the status bar"};
+locObj.serverStatusND = {"txt":"n/d", "loc":"server status is no data"};
+locObj.serverStatusUp = {"txt":"Up", "loc":"server status is Up"};
+locObj.serverStatusDown = {"txt":"Down", "loc":"server status is Down"};
+locObj.online = {"txt":"Online: ", "loc":"label before the online users counter"};
+locObj.onlineValueND = {"txt":"n/d", "loc":"online users numbers has no data"};
+locObj.userCntOne = {"txt":"user", "loc":"(one) user"};
+locObj.userCntTwoPlus = {"txt":"users", "loc":"two or more users"};
+locObj.errNoCloudSave = {"txt":"you don't have savegame in the cloud", "loc":"could happen when trying to load a savegame from DB"};
+locObj.errGettingCloudSave = {"txt":"error while trying to get your cloudsave from the cloud","loc":"could happen when trying to get a savegame from backend"};
+locObj.errLoadingCloudSave = {"txt":"error while processing your cloudsave","loc":"could happen while loading cloudsave"};
+locObj.errGetSaveEndpoint = {"txt":"error from server. Are you logged in? Is server up?","loc":"endpoint error from /get_savegame"};
