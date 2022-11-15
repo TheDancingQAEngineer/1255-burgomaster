@@ -1,10 +1,12 @@
+import json
 import unittest
 
 from python.testware.seleniumwrapper import SeleniumBaseTest
 
 from os import environ
-from selenium.webdriver import Chrome
+from selenium.webdriver import Chrome, Firefox
 from selenium.webdriver.chrome.options import Options as ChromeOptions
+from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.remote.command import Command
 
@@ -13,6 +15,12 @@ class SeleniumSmokeTest(SeleniumBaseTest):
 
     def test_can_run_firefox_and_quit(self):
         self.assertEqual("firefox", self.browser.name)
+
+    def test_can_access_local_storage_firefox(self):
+        self.browser.get("http://localhost:6699")
+        local_storage = self.browser.execute_script("return window.localStorage;")
+        self.assertIn("areso-lang", local_storage)
+
 
 class SeleniumChromeTest(unittest.TestCase):
 
