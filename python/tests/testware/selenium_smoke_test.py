@@ -1,14 +1,11 @@
-import json
 import unittest
 
 from python.testware.seleniumwrapper import SeleniumBaseTest
 
 from os import environ
-from selenium.webdriver import Chrome, Firefox
+from selenium.webdriver import Chrome
 from selenium.webdriver.chrome.options import Options as ChromeOptions
-from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from selenium.webdriver.remote.webdriver import WebDriver
-from selenium.webdriver.remote.command import Command
 
 
 class SeleniumSmokeTest(SeleniumBaseTest):
@@ -19,8 +16,15 @@ class SeleniumSmokeTest(SeleniumBaseTest):
     def test_can_access_local_storage_firefox(self):
         self.browser.get("http://localhost:6699")
         local_storage = self.browser.execute_script("return window.localStorage;")
+        self.assertIsInstance(local_storage, dict)
         self.assertIn("areso-lang", local_storage)
 
+    def test_can_add_to_local_storage(self):
+        self.browser.get("http://localhost:6699")
+        self.browser.execute_script('window.localStorage.setItem("cats", "are cute");')
+        local_storage = self.browser.execute_script("return window.localStorage;")
+        self.assertIn("cats", local_storage)
+        self.assertEqual("are cute", local_storage["cats"])
 
 class SeleniumChromeTest(unittest.TestCase):
 
@@ -28,7 +32,7 @@ class SeleniumChromeTest(unittest.TestCase):
         self.options: ChromeOptions = ChromeOptions()
         if "GITHUB_ACTIONS" in environ:
             self.options.headless = True
-        self.options.add_experimental_option("w3c", False)
+        # self.options.add_experimental_option("w3c", False)
         self.browser: WebDriver = Chrome(options=self.options)
         self.addCleanup(self.browser.quit)
 
@@ -37,9 +41,8 @@ class SeleniumChromeTest(unittest.TestCase):
 
     def test_can_access_chrome_local_storage(self):
         self.browser.get("http://localhost:6699")
-        storage_keys = self.browser.execute(Command.GET_LOCAL_STORAGE_KEYS)
-        self.assertIn("value", storage_keys.keys())
-        self.assertIn("areso-lang", storage_keys["value"])
+        local_storage = self.browser.execute_script("return window.localStorage;")
+        self.assertIn("areso-lang", local_storage)
 
 
 if __name__ == '__main__':
