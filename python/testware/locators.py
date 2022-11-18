@@ -6,3 +6,6 @@ class StartPageLocators:
     RESOURCE_PANEL = (By.CLASS_NAME, "resource-panel")
     CANVAS = (By.ID, "canvas")
     SAVE_GAME_BUTTON = (By.CSS_SELECTOR, "div#saveGameButton")
+    LOAD_GAME_BUTTON = (By.ID, "loadGameButton")
+    LOG = (By.ID, "log")
+    

@@ -66,8 +66,20 @@ class StartPageObject(BasePageObject):
         except AssertionError as e:
             raise AssertionError("Save button not present") from e
 
+    def verify_load_button_is_present(self):
+        try:
+            self.verify_element_is_present(StartPageLocators.LOAD_GAME_BUTTON)
+        except AssertionError as e:
+            raise AssertionError("Load button not present") from e
+
     def click_save_button(self):
         try:
             self.verify_element_is_clickable_and_click(StartPageLocators.SAVE_GAME_BUTTON)
         except AssertionError as e:
             raise AssertionError("Can't click Save button.") from e
+
+    def click_load_button(self):
+        try:
+            self.verify_element_is_clickable_and_click(StartPageLocators.LOAD_GAME_BUTTON)
+        except AssertionError as e:
+            raise AssertionError("Can't click Load button.") from e
